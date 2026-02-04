@@ -7,38 +7,64 @@ export interface Admin {
 
 export interface Member {
   id: string;
-  name: string;
+  fullName: string;
   email: string;
   studentId: string;
-  phone: string;
+  phone?: string;
+  position?: string;
+  status: 'active' | 'inactive' | 'alumni';
   joinDate: string;
-  qrCode?: string;
   registeredEvents: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Event {
   id: string;
   title: string;
   description: string;
-  date: string;
-  time: string;
+  date: string; // YYYY-MM-DD
+  endDate?: string | null; // za multi-day events
+  time?: string | null; // HH:MM
   location: string;
+  // Image/Banner
   image?: string;
-  registeredCount: number;
-  capacity?: number;
+  imageUrl?: string;
+  // Participants
+  numberOfParticipants?: number;
+  participantCount?: number;
+  capacity: number;
+  // Event Type
+  isSingleDay: boolean;
+  duration?: string;
+  // Registration & Links
+  registrationFormLink?: string;
+  registrationFormUrl?: string;
+  websiteLink?: string;
+  websiteUrl?: string;
+  // Status
+  registeredCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Discount {
   id: string;
   title: string;
   description: string;
-  percentage: number;
-  location: string;
-  image?: string;
-  logo?: string;
-  expiryDate?: string;
+  partnerName: string;
+  discountPercentage: number;
+  discountDescription?: string;
   category: string;
-  registeredCount?: number;
+  imageUrl?: string;
+  logoUrl?: string;
+  validFrom?: string;
+  validUntil: string;
+  terms?: string;
+  qrCodeUrl?: string;
+  redemptionCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Location {

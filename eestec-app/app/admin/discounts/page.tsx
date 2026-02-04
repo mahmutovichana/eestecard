@@ -226,10 +226,10 @@ export default function DiscountsManagement() {
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h3 className="font-bold text-eestec-dark">{discount.title}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{discount.location}</p>
+                    <p className="text-sm text-gray-600 mt-1">{discount.partnerName}</p>
                   </div>
                   <span className="badge-primary text-lg font-bold">
-                    {discount.percentage}%
+                    {discount.discountPercentage}%
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">{discount.description}</p>

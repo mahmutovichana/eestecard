@@ -14,77 +14,60 @@ const MEMBER_DATA = {
   qrCodeData: 'https://eestec-sa.example.com/verify?id=EESTEC-2024-001',
 };
 
-const DEMO_EVENTS: Event[] = [
-  {
-    id: '1',
-    title: 'IoT Workshop',
-    description: 'Learn about IoT development and embedded systems',
-    date: '2024-02-15',
-    time: '18:00',
-    location: 'Engineering Faculty',
-    registeredCount: 45,
-    capacity: 100,
-  },
-  {
-    id: '2',
-    title: 'AI & Machine Learning',
-    description: 'Discover the latest trends in AI',
-    date: '2024-02-20',
-    time: '19:00',
-    location: 'Tech Hub Sarajevo',
-    registeredCount: 62,
-    capacity: 80,
-  },
-  {
-    id: '3',
-    title: 'Networking Event',
-    description: 'Meet professionals and fellow students',
-    date: '2024-02-25',
-    time: '17:30',
-    location: 'City Center',
-    registeredCount: 120,
-  },
-];
-
-const DEMO_DISCOUNTS: Discount[] = [
-  {
-    id: '1',
-    title: 'Coffee Paradise',
-    description: 'Get 20% off on all beverages',
-    percentage: 20,
-    location: 'Baščaršija',
-    category: 'food',
-  },
-  {
-    id: '2',
-    title: 'Tech Store XYZ',
-    description: 'Electronics and accessories discount',
-    percentage: 15,
-    location: 'City Center',
-    category: 'tech',
-  },
-  {
-    id: '3',
-    title: 'Student Pizzeria',
-    description: 'Student-friendly pizza place',
-    percentage: 25,
-    location: 'Sarajevo',
-    category: 'food',
-  },
-];
-
 export default function UserHome() {
   const [activeTab, setActiveTab] = useState('card');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [discounts, setDiscounts] = useState<Discount[]>([]);
   const [registeredEvents, setRegisteredEvents] = useState<string[]>([]);
   const [searchDiscount, setSearchDiscount] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
+  const [loadingEvents, setLoadingEvents] = useState(true);
+  const [loadingDiscounts, setLoadingDiscounts] = useState(true);
+
+  // Učitaj sve evente iz baze
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/admin/events');
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data);
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      } finally {
+        setLoadingEvents(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  // Učitaj sve diskonte iz baze
+  useEffect(() => {
+    const fetchDiscounts = async () => {
+      try {
+        const response = await fetch('/api/admin/discounts');
+        if (response.ok) {
+          const data = await response.json();
+          setDiscounts(data);
+        }
+      } catch (error) {
+        console.error('Error fetching discounts:', error);
+      } finally {
+        setLoadingDiscounts(false);
+      }
+    };
+
+    fetchDiscounts();
+  }, []);
 
   const handleRegister = (eventId: string) => {
     setRegisteredEvents([...registeredEvents, eventId]);
   };
 
-  const filteredDiscounts = DEMO_DISCOUNTS.filter((discount) => {
+  const filteredDiscounts = discounts.filter((discount) => {
     const matchesSearch = discount.title.toLowerCase().includes(searchDiscount.toLowerCase()) ||
                          discount.description.toLowerCase().includes(searchDiscount.toLowerCase());
     const matchesCategory = !filterCategory || discount.category === filterCategory;
@@ -243,7 +226,7 @@ export default function UserHome() {
                       ) : (
                         <div className="space-y-3">
                           {registeredEvents.map((eventId) => {
-                            const event = DEMO_EVENTS.find((e) => e.id === eventId);
+                            const event = events.find((e) => e.id === eventId);
                             return (
                               <div
                                 key={eventId}
@@ -270,16 +253,26 @@ export default function UserHome() {
             {activeTab === 'events' && (
               <div>
                 <h2 className="section-title">Upcoming Events</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {DEMO_EVENTS.map((event) => (
-                    <EventCard
-                      key={event.id}
-                      event={event}
-                      onRegister={handleRegister}
-                      isRegistered={registeredEvents.includes(event.id)}
-                    />
-                  ))}
-                </div>
+                {loadingEvents ? (
+                  <div className="text-center py-12">
+                    <p className="text-gray-600">Loading events...</p>
+                  </div>
+                ) : events.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {events.map((event) => (
+                      <EventCard
+                        key={event.id}
+                        event={event}
+                        onRegister={handleRegister}
+                        isRegistered={registeredEvents.includes(event.id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-gray-600">No events available at the moment.</p>
+                  </div>
+                )}
               </div>
             )}
 
@@ -308,7 +301,11 @@ export default function UserHome() {
                   </select>
                 </div>
 
-                {filteredDiscounts.length > 0 ? (
+                {loadingDiscounts ? (
+                  <div className="text-center py-12">
+                    <p className="text-gray-600">Loading discounts...</p>
+                  </div>
+                ) : filteredDiscounts.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredDiscounts.map((discount) => (
                       <DiscountCard key={discount.id} discount={discount} />

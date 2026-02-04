@@ -15,7 +15,7 @@ export default function DiscountCard({ discount }: DiscountCardProps) {
     if (navigator.share) {
       navigator.share({
         title: discount.title,
-        text: `${discount.percentage}% off at ${discount.location}`,
+        text: `${discount.discountPercentage}% off at ${discount.partnerName}`,
         url: window.location.href,
       });
     }
@@ -25,15 +25,15 @@ export default function DiscountCard({ discount }: DiscountCardProps) {
     <div className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden h-full flex flex-col">
       {/* Image Placeholder */}
       <div className="h-40 bg-gradient-to-br from-eestec-red to-red-700 relative overflow-hidden">
-        {discount.image ? (
+        {discount.imageUrl ? (
           <img
-            src={discount.image}
+            src={discount.imageUrl}
             alt={discount.title}
             className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-white text-center px-4">
-            <span className="font-bold text-4xl">{discount.percentage}%</span>
+            <span className="font-bold text-4xl">{discount.discountPercentage}%</span>
           </div>
         )}
       </div>
@@ -45,12 +45,12 @@ export default function DiscountCard({ discount }: DiscountCardProps) {
         </div>
 
         <h3 className="font-bold text-lg text-eestec-dark mb-1">{discount.title}</h3>
-        <p className="text-sm font-semibold text-gray-600 mb-3">{discount.location}</p>
+        <p className="text-sm font-semibold text-gray-600 mb-3">{discount.partnerName}</p>
         <p className="text-sm text-gray-600 mb-4 flex-grow">{discount.description}</p>
 
-        {discount.expiryDate && (
+        {discount.validUntil && (
           <p className="text-xs text-gray-500 mb-4">
-            Expires: {new Date(discount.expiryDate).toLocaleDateString()}
+            Expires: {new Date(discount.validUntil).toLocaleDateString()}
           </p>
         )}
 

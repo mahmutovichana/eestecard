@@ -16,6 +16,10 @@
 /build
 /dist
 
+# Database
+/data/
+/data/*.json
+
 # Misc
 .DS_Store
 *.pem
