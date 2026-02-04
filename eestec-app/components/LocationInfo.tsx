@@ -38,9 +38,9 @@ export default function LocationInfo({
 
         {/* Map */}
         <iframe
-          src={mapUrl.replace('https://www.google.com/maps/', 'https://www.google.com/maps/embed?pb=')}
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2876.949434461326!2d18.393220463924056!3d43.85687672589363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4758c9985a13d5b9%3A0x5ec81e894b445043!2sEESTEC%20LC%20Sarajevo!5e0!3m2!1sen!2sba!4v1770239422807!5m2!1sen!2sba"
           width="100%"
-          height="300"
+          height="400"
           style={{ border: 0 }}
           allowFullScreen
           loading="lazy"
