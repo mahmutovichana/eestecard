@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Google Sans Flex', 'Segoe UI', Roboto, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white;
+}
+
+.badge-base {
+  @apply px-3 py-1.5 rounded-full text-sm font-semibold inline-block;
+}
+
+.badge-primary {
+  @apply badge-base bg-eestec-red text-white;
+}
+
+.badge-secondary {
+  @apply badge-base bg-gray-200 text-eestec-dark;
+}
+
+.section-title {
+  @apply text-2xl md:text-3xl font-bold text-eestec-dark mb-6;
+}
+
+.gradient-border {
+  @apply border-t-4 border-eestec-red;
+}
