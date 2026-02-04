@@ -95,12 +95,8 @@ export default function UserHome() {
       {/* Mobile Header */}
       <header className="sticky top-0 z-40 bg-white border-b border-gray-200 md:hidden">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src="/logo-red.png" alt="EESTEC" className="h-8 w-auto" />
-            <div>
-              <h1 className="text-xl font-bold text-eestec-red">EESTEC</h1>
-              <p className="text-xs text-gray-500">LC Sarajevo</p>
-            </div>
+          <div className="flex items-center justify-center flex-1">
+            <img src="/logo-red.png" alt="EESTEC" className="h-11 w-auto" />
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -146,13 +142,12 @@ export default function UserHome() {
       <div className="flex">
         {/* Desktop Sidebar */}
         <aside className="hidden md:block w-64 bg-white border-r border-gray-200 sticky top-0 h-screen overflow-y-auto">
-          <div className="p-6">
+          <div className="p-6 flex flex-col items-center py-8">
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-eestec-red">EESTEC</h1>
-              <p className="text-sm text-gray-500 mt-1">LC Sarajevo</p>
+              <img src="/logo-red.png" alt="EESTEC" className="h-20 w-auto" />
             </div>
 
-            <nav className="space-y-2">
+            <nav className="space-y-2 w-full">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
