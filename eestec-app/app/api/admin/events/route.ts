@@ -1,17 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verify } from '@/lib/auth';
-
-// Middleware to check admin auth
-export async function verifyAdminToken(req: NextRequest) {
-  const token = req.headers.get('authorization')?.replace('Bearer ', '');
-  
-  if (!token) {
-    return null;
-  }
-
-  const payload = await verify(token);
-  return payload;
-}
+import { verifyAdminToken } from '@/lib/auth';
 
 // Example: GET /api/admin/events
 export async function GET(req: NextRequest) {
