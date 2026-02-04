@@ -77,10 +77,19 @@ export default function UserHome() {
   const [activeTab, setActiveTab] = useState('card');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [registeredEvents, setRegisteredEvents] = useState<string[]>([]);
+  const [searchDiscount, setSearchDiscount] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
 
   const handleRegister = (eventId: string) => {
     setRegisteredEvents([...registeredEvents, eventId]);
   };
+
+  const filteredDiscounts = DEMO_DISCOUNTS.filter((discount) => {
+    const matchesSearch = discount.title.toLowerCase().includes(searchDiscount.toLowerCase()) ||
+                         discount.description.toLowerCase().includes(searchDiscount.toLowerCase());
+    const matchesCategory = !filterCategory || discount.category === filterCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const tabs = [
     { id: 'card', label: 'My Card', icon: QrCode },
@@ -281,10 +290,16 @@ export default function UserHome() {
                 <div className="mb-6 flex flex-col sm:flex-row gap-3">
                   <input
                     type="text"
+                    value={searchDiscount}
+                    onChange={(e) => setSearchDiscount(e.target.value)}
                     placeholder="Search discounts..."
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-eestec-red"
                   />
-                  <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-eestec-red">
+                  <select 
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-eestec-red"
+                  >
                     <option value="">All Categories</option>
                     <option value="food">Food & Beverage</option>
                     <option value="tech">Tech & Electronics</option>
@@ -293,11 +308,17 @@ export default function UserHome() {
                   </select>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {DEMO_DISCOUNTS.map((discount) => (
-                    <DiscountCard key={discount.id} discount={discount} />
-                  ))}
-                </div>
+                {filteredDiscounts.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredDiscounts.map((discount) => (
+                      <DiscountCard key={discount.id} discount={discount} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-gray-500 text-lg">No discounts found matching your search.</p>
+                  </div>
+                )}
               </div>
             )}
 
