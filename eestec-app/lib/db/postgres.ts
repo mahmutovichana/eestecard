@@ -1,11 +1,11 @@
 import { Pool, QueryResult } from 'pg';
 
+// Log connection attempt
+console.log('Database URL:', process.env.DATABASE_URL?.replace(/:[^:]*@/, ':****@'));
+
 // Kreiram connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
 });
 
 // Error handling
